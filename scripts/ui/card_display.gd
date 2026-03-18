@@ -60,30 +60,33 @@ func _draw():
 	draw_string(font, Vector2(12, 23), cost_str, HORIZONTAL_ALIGNMENT_LEFT, 20, font_size, Color.WHITE)
 
 	# Card name centered near top
-	var name_str = card_data.card_name if card_data.card_name else ""
+	var name_str: String = Locale.pick(
+		card_data.card_name if card_data.card_name else "",
+		card_data.card_name_zh if card_data.card_name_zh else ""
+	)
 	draw_string(font, Vector2(5, 48), name_str, HORIZONTAL_ALIGNMENT_CENTER, 110, font_size, Color.WHITE)
 
-	# Chinese name below (smaller)
-	var name_zh = card_data.card_name_zh if card_data.card_name_zh else ""
 	var small_size = maxi(font_size - 4, 8)
-	draw_string(font, Vector2(5, 64), name_zh, HORIZONTAL_ALIGNMENT_CENTER, 110, small_size, Color(0.9, 0.9, 0.9))
 
 	# Description text in middle area
 	var desc_size = maxi(font_size - 4, 8)
-	var desc_text: String = card_data.description if card_data.description else "..."
-	draw_string(font, Vector2(8, 90), desc_text, HORIZONTAL_ALIGNMENT_CENTER, 104, desc_size, Color(0.95, 0.95, 0.9))
+	var desc_text: String = Locale.pick(
+		card_data.description if card_data.description else "...",
+		card_data.description_zh if card_data.description_zh else card_data.description if card_data.description else "..."
+	)
+	draw_string(font, Vector2(8, 78), desc_text, HORIZONTAL_ALIGNMENT_CENTER, 104, desc_size, Color(0.95, 0.95, 0.9))
 
 	# Type label at bottom
 	var type_str: String
 	match card_data.type:
 		0:
-			type_str = "Attack"
+			type_str = Locale.tr("Attack", "攻击")
 		1:
-			type_str = "Skill"
+			type_str = Locale.tr("Skill", "技能")
 		2:
-			type_str = "Power"
+			type_str = Locale.tr("Power", "能力")
 		_:
-			type_str = "Curse"
+			type_str = Locale.tr("Curse", "诅咒")
 	draw_string(font, Vector2(5, 160), type_str, HORIZONTAL_ALIGNMENT_CENTER, 110, small_size, Color(0.8, 0.8, 0.8))
 
 

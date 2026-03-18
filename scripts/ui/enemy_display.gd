@@ -38,8 +38,8 @@ func _draw():
 	# Name
 	var font = ThemeDB.fallback_font
 	var font_size = 14
-	draw_string(font, Vector2(10, 20), _enemy.enemy_name, HORIZONTAL_ALIGNMENT_CENTER, 130, font_size, Color.WHITE)
-	draw_string(font, Vector2(10, 35), _enemy.enemy_name_zh, HORIZONTAL_ALIGNMENT_CENTER, 130, font_size - 2, Color(0.8, 0.8, 0.8))
+	var display_name: String = Locale.pick(_enemy.enemy_name, _enemy.enemy_name_zh)
+	draw_string(font, Vector2(10, 25), display_name, HORIZONTAL_ALIGNMENT_CENTER, 130, font_size, Color.WHITE)
 
 	# HP bar
 	var hp_ratio = float(_enemy.current_hp) / float(_enemy.max_hp)
