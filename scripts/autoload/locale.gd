@@ -37,8 +37,8 @@ func is_en() -> bool:
 
 
 ## Pick the right string based on current language.
-## Usage: Locale.tr(english_text, chinese_text)
-func tr(en_text: String, zh_text: String) -> String:
+## Usage: Locale.t(english_text, chinese_text)
+func t(en_text: String, zh_text: String) -> String:
 	return zh_text if current_lang == "zh" else en_text
 
 

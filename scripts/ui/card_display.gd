@@ -80,13 +80,13 @@ func _draw():
 	var type_str: String
 	match card_data.type:
 		0:
-			type_str = Locale.tr("Attack", "攻击")
+			type_str = Locale.t("Attack", "攻击")
 		1:
-			type_str = Locale.tr("Skill", "技能")
+			type_str = Locale.t("Skill", "技能")
 		2:
-			type_str = Locale.tr("Power", "能力")
+			type_str = Locale.t("Power", "能力")
 		_:
-			type_str = Locale.tr("Curse", "诅咒")
+			type_str = Locale.t("Curse", "诅咒")
 	draw_string(font, Vector2(5, 160), type_str, HORIZONTAL_ALIGNMENT_CENTER, 110, small_size, Color(0.8, 0.8, 0.8))
 
 

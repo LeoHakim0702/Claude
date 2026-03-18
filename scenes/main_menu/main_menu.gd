@@ -70,18 +70,18 @@ func _ready():
 
 
 func _update_texts() -> void:
-	_title.text = Locale.tr("Voyages of Zheng He", "郑和下西洋")
-	_subtitle.text = Locale.tr("A Roguelike Deckbuilder", "肉鸽卡牌构筑游戏")
-	_tagline.text = Locale.tr(
+	_title.text = Locale.t("Voyages of Zheng He", "郑和下西洋")
+	_subtitle.text = Locale.t("A Roguelike Deckbuilder", "肉鸽卡牌构筑游戏")
+	_tagline.text = Locale.t(
 		"Navigate the seas, build your deck, forge alliances",
 		"纵横四海，构筑牌组，缔结同盟"
 	)
-	_start_btn.text = Locale.tr("Start Voyage", "开始航行")
-	_quit_btn.text = Locale.tr("Quit", "退出")
+	_start_btn.text = Locale.t("Start Voyage", "开始航行")
+	_quit_btn.text = Locale.t("Quit", "退出")
 	_ver.text = "v0.2.0"
 
 	# Language button shows the OTHER language as the action
-	_lang_btn.text = Locale.tr("中文", "English")
+	_lang_btn.text = Locale.t("中文", "English")
 
 
 func _on_lang_toggle() -> void:

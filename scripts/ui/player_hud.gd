@@ -45,8 +45,8 @@ func _ready():
 
 
 func update_hud(hp: int, max_hp: int, block: int, energy: int, max_energy: int, draw_count: int, discard_count: int):
-	_hp_label.text = Locale.tr("HP: %d / %d" % [hp, max_hp], "生命: %d / %d" % [hp, max_hp])
-	_block_label.text = Locale.tr("Block: %d" % block, "格挡: %d" % block)
-	_energy_label.text = Locale.tr("Energy: %d / %d" % [energy, max_energy], "能量: %d / %d" % [energy, max_energy])
-	_draw_count_label.text = Locale.tr("Draw Pile: %d" % draw_count, "抽牌堆: %d" % draw_count)
-	_discard_count_label.text = Locale.tr("Discard: %d" % discard_count, "弃牌堆: %d" % discard_count)
+	_hp_label.text = Locale.t("HP: %d / %d" % [hp, max_hp], "生命: %d / %d" % [hp, max_hp])
+	_block_label.text = Locale.t("Block: %d" % block, "格挡: %d" % block)
+	_energy_label.text = Locale.t("Energy: %d / %d" % [energy, max_energy], "能量: %d / %d" % [energy, max_energy])
+	_draw_count_label.text = Locale.t("Draw Pile: %d" % draw_count, "抽牌堆: %d" % draw_count)
+	_discard_count_label.text = Locale.t("Discard: %d" % discard_count, "弃牌堆: %d" % discard_count)
