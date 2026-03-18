@@ -11,7 +11,7 @@ var _enemy_container: HBoxContainer
 var _background: ColorRect
 
 
-func _ready():
+func _ready() -> void:
 	# Build the scene programmatically
 
 	# Background - dark ocean blue

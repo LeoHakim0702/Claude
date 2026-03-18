@@ -42,7 +42,7 @@ func _ready() -> void:
 
 func _generate_map() -> void:
 	var generator := MapGenerator.new()
-	var map_data: Dictionary = generator.generate(GameState.rng, GameState.current_act)
+	var map_data: Dictionary = generator.generate_map(GameState.current_act, GameState.rng)
 	GameState.current_map = map_data
 	_map_renderer.set_map(map_data)
 

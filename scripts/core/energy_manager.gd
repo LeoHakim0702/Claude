@@ -24,7 +24,7 @@ func gain_energy(amount: int) -> void:
 	EventBus.energy_changed.emit(current_energy, max_energy)
 
 
-func can_play_card(card) -> bool:
+func can_play_card(card: Resource) -> bool:
 	if card.cost == -1:
 		return current_energy > 0
 	return card.cost <= current_energy

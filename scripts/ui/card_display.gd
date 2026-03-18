@@ -1,7 +1,7 @@
 extends Control
 class_name CardDisplay
 
-var card_data = null
+var card_data: Resource = null
 var _is_hovered: bool = false
 var _is_dragging: bool = false
 var _drag_offset: Vector2
@@ -15,12 +15,12 @@ signal card_hovered(card_display)
 signal card_unhovered(card_display)
 
 
-func _ready():
+func _ready() -> void:
 	custom_minimum_size = Vector2(120, 170)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 
 
-func setup(data) -> void:
+func setup(data: Resource) -> void:
 	card_data = data
 	queue_redraw()
 

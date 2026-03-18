@@ -6,7 +6,7 @@
 
 config/name="郑和下西洋 - Voyages of Zheng He"
 run/main_scene="res://scenes/main.tscn"
-config/features=PackedStringArray("4.2", "GL Compatibility")
+config/features=PackedStringArray("4.6", "GL Compatibility")
 
 [autoload]
 

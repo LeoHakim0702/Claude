@@ -8,7 +8,7 @@ var _draw_count_label: Label
 var _discard_count_label: Label
 
 
-func _ready():
+func _ready() -> void:
 	# Build UI programmatically
 	# HP section (left side)
 	_hp_label = Label.new()
@@ -44,7 +44,7 @@ func _ready():
 	add_child(_discard_count_label)
 
 
-func update_hud(hp: int, max_hp: int, block: int, energy: int, max_energy: int, draw_count: int, discard_count: int):
+func update_hud(hp: int, max_hp: int, block: int, energy: int, max_energy: int, draw_count: int, discard_count: int) -> void:
 	_hp_label.text = Locale.t("HP: %d / %d" % [hp, max_hp], "生命: %d / %d" % [hp, max_hp])
 	_block_label.text = Locale.t("Block: %d" % block, "格挡: %d" % block)
 	_energy_label.text = Locale.t("Energy: %d / %d" % [energy, max_energy], "能量: %d / %d" % [energy, max_energy])

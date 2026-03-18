@@ -1,14 +1,14 @@
 extends Control
 class_name EnemyDisplay
 
-var _enemy = null
+var _enemy: EnemyInstance = null
 var _is_hovered: bool = false
 var display_index: int = 0
 
 signal enemy_clicked(enemy_display)
 
 
-func setup(enemy_instance, index: int = 0):
+func setup(enemy_instance: EnemyInstance, index: int = 0) -> void:
 	_enemy = enemy_instance
 	display_index = index
 	custom_minimum_size = Vector2(140, 200)
@@ -114,9 +114,9 @@ func _notification(what):
 		queue_redraw()
 
 
-func update_display():
+func update_display() -> void:
 	queue_redraw()
 
 
-func get_enemy():
+func get_enemy() -> EnemyInstance:
 	return _enemy if _enemy else null
