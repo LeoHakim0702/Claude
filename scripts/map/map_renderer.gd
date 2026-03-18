@@ -184,13 +184,13 @@ func _draw_node(node: MapData.MapNode) -> void:
 			_draw_start_icon(pos, node_color, outline_color)
 
 	# Draw port name below node
-	if node.port_name_zh != "":
-		var label := node.port_name_zh
+	var port_label: String = Locale.pick(node.port_name, node.port_name_zh)
+	if port_label != "":
 		var font := ThemeDB.fallback_font
 		var font_size := 11
-		var text_size := font.get_string_size(label, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size)
+		var text_size := font.get_string_size(port_label, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size)
 		var text_pos := pos + PORT_NAME_OFFSET - Vector2(text_size.x / 2.0, 0)
-		draw_string(font, text_pos, label, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, COLOR_PORT_TEXT)
+		draw_string(font, text_pos, port_label, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, COLOR_PORT_TEXT)
 
 	# Pulsing indicator for available nodes
 	if node.available and node.id != current_node_id:

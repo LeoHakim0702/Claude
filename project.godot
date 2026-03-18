@@ -12,6 +12,7 @@ config/features=PackedStringArray("4.2", "GL Compatibility")
 
 EventBus="*res://scripts/autoload/event_bus.gd"
 GameState="*res://scripts/autoload/game_state.gd"
+Locale="*res://scripts/autoload/locale.gd"
 
 [display]
 

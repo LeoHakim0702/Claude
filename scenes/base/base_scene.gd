@@ -100,7 +100,7 @@ func _draw_fallback_bg() -> void:
 func _build_ui() -> void:
 	# Title
 	var title := Label.new()
-	title.text = "刘家港 · Liujiagang Harbor"
+	title.text = Locale.tr("Liujiagang Harbor", "刘家港")
 	title.position = Vector2(380, 28)
 	title.add_theme_font_size_override("font_size", 32)
 	title.add_theme_color_override("font_color", INK_DARK)
@@ -134,7 +134,9 @@ func _build_ui() -> void:
 
 		var btn := Button.new()
 		var level_text := "MAX" if maxed else "Lv.%d" % current_level
-		btn.text = "%s\n%s [%s]\n%s" % [upgrade.name_zh, upgrade.name, level_text, "" if maxed else "%d金" % cost]
+		var uname: String = Locale.pick(upgrade.name, upgrade.name_zh)
+		var cost_text: String = "" if maxed else Locale.tr("%dG" % cost, "%d金" % cost)
+		btn.text = "%s [%s]\n%s" % [uname, level_text, cost_text]
 		btn.position = Vector2(100 + col * 240, 200 + row_idx * 120)
 		btn.custom_minimum_size = Vector2(220, 100)
 		btn.add_theme_font_size_override("font_size", 14)
@@ -155,12 +157,12 @@ func _build_ui() -> void:
 	_info_label.add_theme_font_size_override("font_size", 16)
 	_info_label.add_theme_color_override("font_color", INK_MED)
 	_info_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_info_label.text = "选择一项升级以查看详情 / Select an upgrade to see details"
+	_info_label.text = Locale.tr("Select an upgrade to see details", "选择一项升级以查看详情")
 	add_child(_info_label)
 
 	# Start Voyage button
 	var start_btn := Button.new()
-	start_btn.text = "出发远航 / Start Voyage"
+	start_btn.text = Locale.tr("Start Voyage", "出发远航")
 	start_btn.position = Vector2(900, 580)
 	start_btn.custom_minimum_size = Vector2(300, 70)
 	start_btn.add_theme_font_size_override("font_size", 22)
@@ -169,7 +171,7 @@ func _build_ui() -> void:
 
 	# Back to menu button
 	var menu_btn := Button.new()
-	menu_btn.text = "返回主菜单 / Main Menu"
+	menu_btn.text = Locale.tr("Main Menu", "返回主菜单")
 	menu_btn.position = Vector2(900, 660)
 	menu_btn.custom_minimum_size = Vector2(300, 40)
 	menu_btn.add_theme_font_size_override("font_size", 14)
@@ -186,7 +188,7 @@ func _get_upgrade_cost(upgrade_id: String) -> int:
 func _on_upgrade_pressed(upgrade_id: String) -> void:
 	var cost := _get_upgrade_cost(upgrade_id)
 	if GameState.purchase_meta_upgrade(upgrade_id, cost):
-		_info_label.text = "升级成功！/ Upgrade purchased!"
+		_info_label.text = Locale.tr("Upgrade purchased!", "升级成功！")
 		_update_gold_display()
 		_refresh_buttons()
 		EventBus.base_upgrade_purchased.emit(upgrade_id)
@@ -198,13 +200,17 @@ func _on_start_voyage() -> void:
 
 
 func _update_gold_display() -> void:
-	_gold_label.text = "航海基金: %d 金 / Fleet Fund: %d Gold" % [GameState.meta_gold, GameState.meta_gold]
+	_gold_label.text = Locale.tr(
+		"Fleet Fund: %d Gold" % GameState.meta_gold,
+		"航海基金: %d 金" % GameState.meta_gold
+	)
 
 
 func _update_stats_display() -> void:
-	_stats_label.text = "总航行: %d次  最远: 第%d幕  同盟国: %d" % [
-		GameState.total_runs, GameState.best_act_reached, GameState.nations_allied.size()
-	]
+	_stats_label.text = Locale.tr(
+		"Voyages: %d  Best: Act %d  Allies: %d" % [GameState.total_runs, GameState.best_act_reached, GameState.nations_allied.size()],
+		"总航行: %d次  最远: 第%d幕  同盟国: %d" % [GameState.total_runs, GameState.best_act_reached, GameState.nations_allied.size()]
+	)
 
 
 func _refresh_buttons() -> void:
@@ -224,7 +230,9 @@ func _refresh_buttons() -> void:
 
 		var btn := Button.new()
 		var level_text := "MAX" if maxed else "Lv.%d" % current_level
-		btn.text = "%s\n%s [%s]\n%s" % [upgrade.name_zh, upgrade.name, level_text, "" if maxed else "%d金" % cost]
+		var uname: String = Locale.pick(upgrade.name, upgrade.name_zh)
+		var cost_text: String = "" if maxed else Locale.tr("%dG" % cost, "%d金" % cost)
+		btn.text = "%s [%s]\n%s" % [uname, level_text, cost_text]
 		btn.position = Vector2(100 + col * 240, 200 + row_idx * 120)
 		btn.custom_minimum_size = Vector2(220, 100)
 		btn.add_theme_font_size_override("font_size", 14)

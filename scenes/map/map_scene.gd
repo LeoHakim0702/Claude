@@ -72,14 +72,18 @@ func _restore_map() -> void:
 
 
 func _update_labels() -> void:
-	var act_names := ["", "南洋 · Southeast Asia", "印度洋 · Indian Ocean", "中东与非洲 · Middle East & Africa"]
-	var act_name: String = act_names[clampi(GameState.current_act, 1, 3)]
-	_act_label.text = "第%d幕 · Act %d: %s" % [GameState.current_act, GameState.current_act, act_name]
-	_info_label.text = "HP: %d/%d  |  金: %d  |  遗物: %d  |  牌组: %d" % [
-		GameState.player_hp, GameState.player_max_hp,
-		GameState.player_gold, GameState.player_relics.size(),
-		GameState.player_deck.size()
-	]
+	var act_names_en := ["", "Southeast Asia", "Indian Ocean", "Middle East & Africa"]
+	var act_names_zh := ["", "南洋", "印度洋", "中东与非洲"]
+	var act_idx := clampi(GameState.current_act, 1, 3)
+	var act_name: String = Locale.tr(act_names_en[act_idx], act_names_zh[act_idx])
+	_act_label.text = Locale.tr(
+		"Act %d: %s" % [GameState.current_act, act_name],
+		"第%d幕: %s" % [GameState.current_act, act_name]
+	)
+	_info_label.text = Locale.tr(
+		"HP: %d/%d  |  Gold: %d  |  Relics: %d  |  Deck: %d" % [GameState.player_hp, GameState.player_max_hp, GameState.player_gold, GameState.player_relics.size(), GameState.player_deck.size()],
+		"HP: %d/%d  |  金: %d  |  遗物: %d  |  牌组: %d" % [GameState.player_hp, GameState.player_max_hp, GameState.player_gold, GameState.player_relics.size(), GameState.player_deck.size()]
+	)
 
 
 func _on_node_selected(node_id: int) -> void:
@@ -114,23 +118,23 @@ func _on_node_selected(node_id: int) -> void:
 		MapData.NodeType.REST:
 			_handle_rest()
 		MapData.NodeType.SHOP:
-			_info_label.text = "商店尚未实装 / Shop not yet implemented"
+			_info_label.text = Locale.tr("Shop not yet implemented", "商店尚未实装")
 		MapData.NodeType.TREASURE:
 			_handle_treasure()
 		_:
-			_info_label.text = "选择下一个目的地 / Select next destination"
+			_info_label.text = Locale.tr("Select next destination", "选择下一个目的地")
 
 
 func _handle_rest() -> void:
 	var heal_amount := int(GameState.player_max_hp * 0.3)
 	GameState.modify_hp(heal_amount)
 	EventBus.rest_heal.emit(heal_amount)
-	_info_label.text = "休整完毕，恢复了 %d HP / Rested and recovered %d HP" % [heal_amount, heal_amount]
+	_info_label.text = Locale.tr("Rested and recovered %d HP" % heal_amount, "休整完毕，恢复了 %d HP" % heal_amount)
 	_update_labels()
 
 
 func _handle_treasure() -> void:
 	var gold_reward := GameState.rng.randi_range(20, 50)
 	GameState.modify_gold(gold_reward)
-	_info_label.text = "发现宝箱！获得 %d 金 / Found treasure! +%d Gold" % [gold_reward, gold_reward]
+	_info_label.text = Locale.tr("Found treasure! +%d Gold" % gold_reward, "发现宝箱！获得 %d 金" % gold_reward)
 	_update_labels()

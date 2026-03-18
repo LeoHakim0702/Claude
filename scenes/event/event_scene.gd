@@ -114,7 +114,7 @@ func _build_ui() -> void:
 
 	# Continue button (shown after choice)
 	_continue_btn = Button.new()
-	_continue_btn.text = "继续航行 / Continue"
+	_continue_btn.text = Locale.tr("Continue Voyage", "继续航行")
 	_continue_btn.position = Vector2(490, 620)
 	_continue_btn.custom_minimum_size = Vector2(300, 50)
 	_continue_btn.add_theme_font_size_override("font_size", 18)
@@ -129,13 +129,13 @@ func _load_random_event() -> void:
 
 func _display_event() -> void:
 	if _event == null:
-		_title_label.text = "平静的海面 / Calm Seas"
-		_desc_label.text = "一切风平浪静。\nAll is calm at sea."
+		_title_label.text = Locale.tr("Calm Seas", "平静的海面")
+		_desc_label.text = Locale.tr("All is calm at sea.", "一切风平浪静。")
 		_show_continue()
 		return
 
-	_title_label.text = "%s\n%s" % [_event.event_name_zh, _event.event_name]
-	_desc_label.text = "%s\n%s" % [_event.description_zh, _event.description]
+	_title_label.text = Locale.pick(_event.event_name, _event.event_name_zh)
+	_desc_label.text = Locale.pick(_event.description, _event.description_zh)
 
 	# Create choice buttons
 	_create_choice_buttons()
@@ -157,10 +157,9 @@ func _create_choice_buttons() -> void:
 		var meets_requirements := _check_requirements(choice.get("requirements", {}))
 
 		var btn := Button.new()
-		var choice_text: String = choice.get("text_zh", "")
-		var choice_text_en: String = choice.get("text", "")
+		var choice_text: String = Locale.pick(choice.get("text", ""), choice.get("text_zh", ""))
 		var effect_hint := _get_effect_hint(choice.get("effects", []))
-		btn.text = "[%s] %s\n%s %s" % [chr(65 + i), choice_text, choice_text_en, effect_hint]  # A, B, C...
+		btn.text = "[%s] %s %s" % [chr(65 + i), choice_text, effect_hint]
 		btn.position = Vector2(200, 300 + i * 55)
 		btn.custom_minimum_size = Vector2(880, 48)
 		btn.add_theme_font_size_override("font_size", 15)
@@ -200,15 +199,15 @@ func _get_effect_hint(effects: Array) -> String:
 				hints.append("-%dHP" % eff.value)
 			"gold":
 				if eff.value > 0:
-					hints.append("+%d金" % eff.value)
+					hints.append("+%d%s" % [eff.value, Locale.tr("G", "金")])
 				else:
-					hints.append("%d金" % eff.value)
+					hints.append("%d%s" % [eff.value, Locale.tr("G", "金")])
 			"diplomacy":
-				hints.append("+%d外交" % eff.value)
+				hints.append("+%d%s" % [eff.value, Locale.tr("Dipl", "外交")])
 			"card":
-				hints.append("+卡牌")
+				hints.append("+%s" % Locale.tr("Card", "卡牌"))
 			"relic":
-				hints.append("+遗物")
+				hints.append("+%s" % Locale.tr("Relic", "遗物"))
 	if hints.is_empty():
 		return ""
 	return "(%s)" % ", ".join(hints)
@@ -225,9 +224,10 @@ func _on_choice_made(choice_index: int) -> void:
 	_apply_effects(choice.get("effects", []))
 
 	# Show result
-	var result_zh: String = choice.get("result_text_zh", "选择已做出。")
-	var result_en: String = choice.get("result_text", "Choice made.")
-	_result_label.text = "%s\n%s" % [result_zh, result_en]
+	_result_label.text = Locale.pick(
+		choice.get("result_text", "Choice made."),
+		choice.get("result_text_zh", "选择已做出。")
+	)
 	_result_label.visible = true
 
 	# Disable choice buttons
