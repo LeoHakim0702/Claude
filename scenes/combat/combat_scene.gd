@@ -5,13 +5,15 @@ var _hand_display: HandDisplay
 var _player_hud: PlayerHUD
 var _enemy_displays: Array[EnemyDisplay] = []
 var _end_turn_button: Button
-var _status_label: Label
+var _status_label: Label  # Shows messages like "You win!" / "You lose!"
 var _target_hint_label: Label
 var _enemy_container: HBoxContainer
 var _background: ColorRect
 
 
 func _ready():
+	# Build the scene programmatically
+
 	# Background - dark ocean blue
 	_background = ColorRect.new()
 	_background.color = Color(0.05, 0.12, 0.2)
@@ -20,7 +22,7 @@ func _ready():
 
 	# Title
 	var title = Label.new()
-	title.text = "COMBAT"
+	title.text = "⚔ COMBAT ⚔"
 	title.position = Vector2(540, 5)
 	title.add_theme_font_size_override("font_size", 20)
 	title.add_theme_color_override("font_color", Color(0.9, 0.8, 0.5))
@@ -76,6 +78,7 @@ func _ready():
 	_combat_manager.request_target_selection.connect(_on_request_target)
 
 	# Start combat with act 1 normal enemies
+	# Pick 1-2 random enemies for now
 	var enemy_pool = ["pirate_skiff", "jellyfish_swarm"]
 	var num_enemies = GameState.rng.randi_range(1, 2)
 	var selected: Array = []
@@ -155,7 +158,11 @@ func _on_combat_ended(won: bool):
 
 	# After 2 seconds, transition
 	await get_tree().create_timer(2.0).timeout
-	get_tree().change_scene_to_file("res://scenes/main_menu/main_menu.tscn")
+	if won:
+		# For now, just go back to main menu
+		get_tree().change_scene_to_file("res://scenes/main_menu/main_menu.tscn")
+	else:
+		get_tree().change_scene_to_file("res://scenes/main_menu/main_menu.tscn")
 
 
 func _input(event):
