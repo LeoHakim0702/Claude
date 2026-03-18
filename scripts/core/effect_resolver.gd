@@ -10,7 +10,7 @@ func init_resolver(deck_mgr: DeckManager, energy_mgr: EnergyManager) -> void:
 	_energy_manager = energy_mgr
 
 
-func resolve_card(card_data, targets: Array, enemies: Array) -> void:
+func resolve_card(card_data: Resource, targets: Array, enemies: Array) -> void:
 	for effect: Dictionary in card_data.effects:
 		var effect_type: String = effect.get("type", "")
 		match effect_type:
@@ -66,7 +66,7 @@ func resolve_card(card_data, targets: Array, enemies: Array) -> void:
 				pass  # Handled by caller after resolve
 
 
-func resolve_enemy_effects(effects: Array, enemy, target_is_player: bool) -> void:
+func resolve_enemy_effects(effects: Array, enemy: EnemyInstance, target_is_player: bool) -> void:
 	for effect: Dictionary in effects:
 		var effect_type: String = effect.get("type", "")
 		match effect_type:

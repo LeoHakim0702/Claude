@@ -114,7 +114,7 @@ func _build_ui() -> void:
 
 	# Continue button (shown after choice)
 	_continue_btn = Button.new()
-	_continue_btn.text = Locale.tr("Continue Voyage", "继续航行")
+	_continue_btn.text = Locale.t("Continue Voyage", "继续航行")
 	_continue_btn.position = Vector2(490, 620)
 	_continue_btn.custom_minimum_size = Vector2(300, 50)
 	_continue_btn.add_theme_font_size_override("font_size", 18)
@@ -129,8 +129,8 @@ func _load_random_event() -> void:
 
 func _display_event() -> void:
 	if _event == null:
-		_title_label.text = Locale.tr("Calm Seas", "平静的海面")
-		_desc_label.text = Locale.tr("All is calm at sea.", "一切风平浪静。")
+		_title_label.text = Locale.t("Calm Seas", "平静的海面")
+		_desc_label.text = Locale.t("All is calm at sea.", "一切风平浪静。")
 		_show_continue()
 		return
 
@@ -199,15 +199,15 @@ func _get_effect_hint(effects: Array) -> String:
 				hints.append("-%dHP" % eff.value)
 			"gold":
 				if eff.value > 0:
-					hints.append("+%d%s" % [eff.value, Locale.tr("G", "金")])
+					hints.append("+%d%s" % [eff.value, Locale.t("G", "金")])
 				else:
-					hints.append("%d%s" % [eff.value, Locale.tr("G", "金")])
+					hints.append("%d%s" % [eff.value, Locale.t("G", "金")])
 			"diplomacy":
-				hints.append("+%d%s" % [eff.value, Locale.tr("Dipl", "外交")])
+				hints.append("+%d%s" % [eff.value, Locale.t("Dipl", "外交")])
 			"card":
-				hints.append("+%s" % Locale.tr("Card", "卡牌"))
+				hints.append("+%s" % Locale.t("Card", "卡牌"))
 			"relic":
-				hints.append("+%s" % Locale.tr("Relic", "遗物"))
+				hints.append("+%s" % Locale.t("Relic", "遗物"))
 	if hints.is_empty():
 		return ""
 	return "(%s)" % ", ".join(hints)

@@ -37,8 +37,8 @@ func is_en() -> bool:
 
 
 ## Pick the right string based on current language.
-## Usage: Locale.tr(english_text, chinese_text)
-func tr(en_text: String, zh_text: String) -> String:
+## Usage: Locale.t(english_text, chinese_text)
+func t(en_text: String, zh_text: String) -> String:
 	return zh_text if current_lang == "zh" else en_text
 
 
@@ -53,7 +53,6 @@ func _save_language() -> void:
 	var f := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if f:
 		f.store_string(current_lang)
-		f.close()
 
 
 func _load_language() -> void:
@@ -64,4 +63,3 @@ func _load_language() -> void:
 		var lang := f.get_as_text().strip_edges()
 		if lang == "en" or lang == "zh":
 			current_lang = lang
-		f.close()

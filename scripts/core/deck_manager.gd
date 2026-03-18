@@ -1,15 +1,15 @@
 class_name DeckManager
 extends RefCounted
 
-var draw_pile: Array = []
-var hand: Array = []
-var discard_pile: Array = []
-var exhaust_pile: Array = []
+var draw_pile: Array[Resource] = []
+var hand: Array[Resource] = []
+var discard_pile: Array[Resource] = []
+var exhaust_pile: Array[Resource] = []
 var max_hand_size: int = 10
 var _rng: RandomNumberGenerator
 
 
-func init_combat(deck: Array, rng: RandomNumberGenerator) -> void:
+func init_combat(deck: Array[Resource], rng: RandomNumberGenerator) -> void:
 	_rng = rng
 	draw_pile = deck.duplicate()
 	hand = []
@@ -22,7 +22,7 @@ func shuffle_draw_pile() -> void:
 	var n: int = draw_pile.size()
 	for i in range(n - 1, 0, -1):
 		var j: int = _rng.randi_range(0, i)
-		var temp = draw_pile[i]
+		var temp: Resource = draw_pile[i]
 		draw_pile[i] = draw_pile[j]
 		draw_pile[j] = temp
 
@@ -35,12 +35,12 @@ func draw_cards(count: int) -> void:
 			_reshuffle()
 		if draw_pile.is_empty():
 			break
-		var card = draw_pile.pop_back()
+		var card: Resource = draw_pile.pop_back()
 		hand.append(card)
 		EventBus.card_drawn.emit(card)
 
 
-func discard_card(card) -> void:
+func discard_card(card: Resource) -> void:
 	var idx: int = hand.find(card)
 	if idx >= 0:
 		hand.remove_at(idx)
@@ -50,12 +50,12 @@ func discard_card(card) -> void:
 
 func discard_hand() -> void:
 	while not hand.is_empty():
-		var card = hand.pop_back()
+		var card: Resource = hand.pop_back()
 		discard_pile.append(card)
 		EventBus.card_discarded.emit(card)
 
 
-func exhaust_card(card) -> void:
+func exhaust_card(card: Resource) -> void:
 	var idx: int = hand.find(card)
 	if idx >= 0:
 		hand.remove_at(idx)
@@ -71,12 +71,12 @@ func exhaust_card(card) -> void:
 	EventBus.card_exhausted.emit(card)
 
 
-func add_to_hand(card) -> void:
+func add_to_hand(card: Resource) -> void:
 	if hand.size() < max_hand_size:
 		hand.append(card)
 
 
-func add_to_discard(card) -> void:
+func add_to_discard(card: Resource) -> void:
 	discard_pile.append(card)
 
 

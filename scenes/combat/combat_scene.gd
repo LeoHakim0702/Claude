@@ -11,7 +11,7 @@ var _enemy_container: HBoxContainer
 var _background: ColorRect
 
 
-func _ready():
+func _ready() -> void:
 	# Build the scene programmatically
 
 	# Background - dark ocean blue
@@ -22,7 +22,7 @@ func _ready():
 
 	# Title
 	var title = Label.new()
-	title.text = Locale.tr("COMBAT", "战斗")
+	title.text = Locale.t("COMBAT", "战斗")
 	title.position = Vector2(540, 5)
 	title.add_theme_font_size_override("font_size", 20)
 	title.add_theme_color_override("font_color", Color(0.9, 0.8, 0.5))
@@ -47,7 +47,7 @@ func _ready():
 
 	# End turn button
 	_end_turn_button = Button.new()
-	_end_turn_button.text = Locale.tr("End Turn", "结束回合")
+	_end_turn_button.text = Locale.t("End Turn", "结束回合")
 	_end_turn_button.position = Vector2(1140, 400)
 	_end_turn_button.custom_minimum_size = Vector2(120, 50)
 	_end_turn_button.pressed.connect(_on_end_turn_pressed)
@@ -63,7 +63,7 @@ func _ready():
 
 	# Target selection hint
 	_target_hint_label = Label.new()
-	_target_hint_label.text = Locale.tr("Select a target", "选择目标")
+	_target_hint_label.text = Locale.t("Select a target", "选择目标")
 	_target_hint_label.position = Vector2(480, 280)
 	_target_hint_label.add_theme_font_size_override("font_size", 16)
 	_target_hint_label.add_theme_color_override("font_color", Color(1, 1, 0, 0.8))
@@ -150,10 +150,10 @@ func _on_combat_ended(won: bool):
 	_status_label.visible = true
 	_end_turn_button.disabled = true
 	if won:
-		_status_label.text = Locale.tr("VICTORY!", "胜利！")
+		_status_label.text = Locale.t("VICTORY!", "胜利！")
 		_status_label.add_theme_color_override("font_color", Color(0.2, 1.0, 0.3))
 	else:
-		_status_label.text = Locale.tr("DEFEAT...", "失败...")
+		_status_label.text = Locale.t("DEFEAT...", "失败...")
 		_status_label.add_theme_color_override("font_color", Color(1.0, 0.2, 0.2))
 
 	# After 2 seconds, transition

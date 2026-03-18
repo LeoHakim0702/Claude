@@ -278,10 +278,8 @@ func deserialize(data: Dictionary) -> void:
 # ── EventBus Integration ───────────────────────────────────────────────────────
 
 func _emit_diplomacy_changed(nation: int, points: int, level: int) -> void:
-	if EventBus.has_signal("diplomacy_changed"):
-		EventBus.emit_signal("diplomacy_changed", nation, points, level)
+	EventBus.diplomacy_changed.emit(nation, points, level)
 
 
-func _emit_diplomacy_level_up(nation: int, old_level: int, new_level: int) -> void:
-	if EventBus.has_signal("diplomacy_level_up"):
-		EventBus.emit_signal("diplomacy_level_up", nation, old_level, new_level)
+func _emit_diplomacy_level_up(nation: int, _old_level: int, new_level: int) -> void:
+	EventBus.diplomacy_level_up.emit(nation, new_level)

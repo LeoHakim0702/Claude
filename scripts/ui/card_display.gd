@@ -1,7 +1,7 @@
 extends Control
 class_name CardDisplay
 
-var card_data = null
+var card_data: Resource = null
 var _is_hovered: bool = false
 var _is_dragging: bool = false
 var _drag_offset: Vector2
@@ -15,12 +15,12 @@ signal card_hovered(card_display)
 signal card_unhovered(card_display)
 
 
-func _ready():
+func _ready() -> void:
 	custom_minimum_size = Vector2(120, 170)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 
 
-func setup(data) -> void:
+func setup(data: Resource) -> void:
 	card_data = data
 	queue_redraw()
 
@@ -80,13 +80,13 @@ func _draw():
 	var type_str: String
 	match card_data.type:
 		0:
-			type_str = Locale.tr("Attack", "攻击")
+			type_str = Locale.t("Attack", "攻击")
 		1:
-			type_str = Locale.tr("Skill", "技能")
+			type_str = Locale.t("Skill", "技能")
 		2:
-			type_str = Locale.tr("Power", "能力")
+			type_str = Locale.t("Power", "能力")
 		_:
-			type_str = Locale.tr("Curse", "诅咒")
+			type_str = Locale.t("Curse", "诅咒")
 	draw_string(font, Vector2(5, 160), type_str, HORIZONTAL_ALIGNMENT_CENTER, 110, small_size, Color(0.8, 0.8, 0.8))
 
 

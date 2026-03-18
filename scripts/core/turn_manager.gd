@@ -4,13 +4,13 @@ extends RefCounted
 var _deck_manager: DeckManager
 var _energy_manager: EnergyManager
 var _effect_resolver: EffectResolver
-var _enemies: Array = []
+var _enemies: Array[EnemyInstance] = []
 var _turn_number: int = 0
 var _is_player_turn: bool = false
 var combat_active: bool = false
 
 
-func init_combat(deck: Array, enemies: Array, rng: RandomNumberGenerator) -> void:
+func init_combat(deck: Array[Resource], enemies: Array[EnemyInstance], rng: RandomNumberGenerator) -> void:
 	_deck_manager = DeckManager.new()
 	_energy_manager = EnergyManager.new()
 	_effect_resolver = EffectResolver.new()
@@ -71,7 +71,7 @@ func execute_enemy_turn() -> void:
 	start_player_turn()
 
 
-func try_play_card(card_data, targets: Array) -> bool:
+func try_play_card(card_data: Resource, targets: Array) -> bool:
 	if not _is_player_turn:
 		return false
 	if not _energy_manager.can_play_card(card_data):
@@ -146,7 +146,7 @@ func get_energy_manager() -> EnergyManager:
 	return _energy_manager
 
 
-func get_hand() -> Array:
+func get_hand() -> Array[Resource]:
 	return _deck_manager.hand
 
 
@@ -154,5 +154,5 @@ func is_player_turn() -> bool:
 	return _is_player_turn
 
 
-func get_enemies() -> Array:
+func get_enemies() -> Array[EnemyInstance]:
 	return _enemies

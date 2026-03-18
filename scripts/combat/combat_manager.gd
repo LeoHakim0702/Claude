@@ -2,16 +2,16 @@ extends Node
 class_name CombatManager
 
 var turn_manager: TurnManager
-var enemy_instances: Array = []
+var enemy_instances: Array[EnemyInstance] = []
 var _awaiting_target: bool = false
-var _pending_card = null
+var _pending_card: Resource = null
 
 signal request_target_selection(card_data)
 signal combat_state_changed()
 signal combat_ended(won: bool)
 
 
-func start_combat(enemy_ids: Array):
+func start_combat(enemy_ids: Array) -> void:
 	enemy_instances.clear()
 	var rng = GameState.rng
 	for eid in enemy_ids:
@@ -30,7 +30,7 @@ func start_combat(enemy_ids: Array):
 	combat_state_changed.emit()
 
 
-func attempt_play_card(card_data, target_enemy = null):
+func attempt_play_card(card_data: Resource, target_enemy: Variant = null) -> void:
 	if not turn_manager.is_player_turn():
 		return
 
@@ -55,7 +55,7 @@ func attempt_play_card(card_data, target_enemy = null):
 		combat_state_changed.emit()
 
 
-func select_target(enemy_instance):
+func select_target(enemy_instance: EnemyInstance) -> void:
 	if _awaiting_target and _pending_card:
 		_awaiting_target = false
 		var card = _pending_card
@@ -63,17 +63,17 @@ func select_target(enemy_instance):
 		attempt_play_card(card, enemy_instance)
 
 
-func end_turn():
+func end_turn() -> void:
 	if turn_manager.is_player_turn():
 		turn_manager.end_player_turn()
 		combat_state_changed.emit()
 
 
-func _on_combat_won():
+func _on_combat_won() -> void:
 	combat_ended.emit(true)
 
 
-func _on_combat_lost():
+func _on_combat_lost() -> void:
 	combat_ended.emit(false)
 
 
@@ -111,12 +111,12 @@ func is_awaiting_target() -> bool:
 	return _awaiting_target
 
 
-func cancel_target_selection():
+func cancel_target_selection() -> void:
 	_awaiting_target = false
 	_pending_card = null
 
 
-func cleanup():
+func cleanup() -> void:
 	if EventBus.combat_won.is_connected(_on_combat_won):
 		EventBus.combat_won.disconnect(_on_combat_won)
 	if EventBus.combat_lost.is_connected(_on_combat_lost):

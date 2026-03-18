@@ -10,7 +10,7 @@ var hand_center_x: float = 640.0  # Center of screen
 signal card_selected(card_data, card_display)
 
 
-func update_hand(hand_cards: Array):
+func update_hand(hand_cards: Array[Resource]) -> void:
 	# Remove old card displays
 	for child in _card_displays:
 		child.queue_free()
@@ -31,8 +31,8 @@ func update_hand(hand_cards: Array):
 	_arrange_cards()
 
 
-func _arrange_cards():
-	var count = _card_displays.size()
+func _arrange_cards() -> void:
+	var count := _card_displays.size()
 	if count == 0:
 		return
 	var total_width = (count - 1) * card_spacing
@@ -58,5 +58,5 @@ func _on_card_unhovered(_card_display: CardDisplay):
 	pass
 
 
-func get_card_displays() -> Array:
+func get_card_displays() -> Array[CardDisplay]:
 	return _card_displays

@@ -5,8 +5,8 @@ var player_max_hp: int = 80
 var player_hp: int = 80
 var player_gold: int = 100
 var player_block: int = 0
-var player_deck: Array = []
-var player_relics: Array = []  # Array of relic_id strings
+var player_deck: Array[Resource] = []
+var player_relics: Array[String] = []
 var player_statuses: Dictionary = {}
 
 # === Run Progression ===
@@ -236,7 +236,6 @@ func _save_meta_progress() -> void:
 	var save_file := FileAccess.open("user://meta_progress.save", FileAccess.WRITE)
 	if save_file:
 		save_file.store_string(JSON.stringify(save_data))
-		save_file.close()
 
 
 func _load_meta_progress() -> void:
@@ -247,7 +246,6 @@ func _load_meta_progress() -> void:
 		return
 	var json := JSON.new()
 	var result := json.parse(save_file.get_as_text())
-	save_file.close()
 	if result != OK:
 		return
 	var data: Dictionary = json.data
