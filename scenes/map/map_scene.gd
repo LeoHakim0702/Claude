@@ -104,6 +104,9 @@ func _on_node_selected(node_id: int) -> void:
 	GameState.current_node_id = node_id
 	_map_renderer.move_to_node(node_id)
 
+	# Save progress
+	GameState.save_run()
+
 	# Emit signal
 	EventBus.map_node_selected.emit(node_id, selected_node.type)
 
