@@ -216,11 +216,24 @@ func purchase_meta_upgrade(upgrade_id: String, cost: int) -> bool:
 func _get_meta_bonus(bonus_type: String) -> int:
 	match bonus_type:
 		"max_hp":
-			return meta_upgrades.get("hull_upgrade", 0) * 5
+			# Support both old and new upgrade IDs
+			var old_bonus: int = meta_upgrades.get("hull_upgrade", 0) * 5
+			var new_bonus: int = meta_upgrades.get("hull_size", 0) * 10
+			return old_bonus + new_bonus
 		"starting_gold":
-			return meta_upgrades.get("treasury", 0) * 15
+			var old_bonus: int = meta_upgrades.get("treasury", 0) * 15
+			var new_bonus: int = meta_upgrades.get("cargo_hold", 0) * 20
+			return old_bonus + new_bonus
 		"starter_relic":
-			return meta_upgrades.get("compass_mastery", 0)
+			var old_val: int = meta_upgrades.get("compass_mastery", 0)
+			var new_val: int = meta_upgrades.get("compass_room", 0)
+			return maxi(old_val, new_val)
+		"turn1_draw":
+			return meta_upgrades.get("mast_sails", 0) + meta_upgrades.get("crew_training", 0)
+		"start_strength":
+			return meta_upgrades.get("cannon_deck", 0)
+		"remove_starter":
+			return meta_upgrades.get("shipyard_dock", 0) + meta_upgrades.get("shipyard", 0)
 		_:
 			return 0
 
@@ -257,3 +270,100 @@ func _load_meta_progress() -> void:
 	nations_allied = []
 	for n in allied_arr:
 		nations_allied.append(int(n))
+
+
+# === Run Save/Load (for Continue Game) ===
+
+const RUN_SAVE_PATH := "user://run_save.save"
+
+
+func has_run_save() -> bool:
+	return FileAccess.file_exists(RUN_SAVE_PATH)
+
+
+func save_run() -> void:
+	if not is_run_active:
+		return
+	var deck_ids: Array[String] = []
+	for card in player_deck:
+		deck_ids.append((card as CardData).id)
+
+	var save_data := {
+		"player_max_hp": player_max_hp,
+		"player_hp": player_hp,
+		"player_gold": player_gold,
+		"player_deck": deck_ids,
+		"player_relics": player_relics,
+		"current_act": current_act,
+		"current_map": current_map,
+		"current_node_id": current_node_id,
+		"acts_completed": acts_completed,
+		"diplomacy_points": diplomacy_points,
+		"diplomacy_levels": diplomacy_levels,
+		"seed_value": seed_value,
+		"is_run_active": true,
+	}
+	var save_file := FileAccess.open(RUN_SAVE_PATH, FileAccess.WRITE)
+	if save_file:
+		save_file.store_string(JSON.stringify(save_data))
+
+
+func load_run_save() -> bool:
+	if not FileAccess.file_exists(RUN_SAVE_PATH):
+		return false
+	var save_file := FileAccess.open(RUN_SAVE_PATH, FileAccess.READ)
+	if not save_file:
+		return false
+	var json := JSON.new()
+	var result := json.parse(save_file.get_as_text())
+	if result != OK:
+		return false
+	var data: Dictionary = json.data
+
+	player_max_hp = int(data.get("player_max_hp", 80))
+	player_hp = int(data.get("player_hp", 80))
+	player_gold = int(data.get("player_gold", 100))
+	player_block = 0
+	player_statuses = {}
+
+	# Restore deck
+	player_deck = []
+	var deck_ids = data.get("player_deck", [])
+	for card_id in deck_ids:
+		var card := CardDatabase.get_card(card_id)
+		if card:
+			player_deck.append((card as CardData).duplicate_card())
+
+	# Restore relics
+	player_relics = []
+	var relic_arr = data.get("player_relics", [])
+	for r in relic_arr:
+		player_relics.append(str(r))
+
+	current_act = int(data.get("current_act", 1))
+	current_map = data.get("current_map", {})
+	current_node_id = int(data.get("current_node_id", -1))
+	acts_completed = []
+	var acts_arr = data.get("acts_completed", [])
+	for a in acts_arr:
+		acts_completed.append(int(a))
+
+	# Restore diplomacy
+	diplomacy_points = {}
+	diplomacy_levels = {}
+	var dp = data.get("diplomacy_points", {})
+	for key in dp:
+		diplomacy_points[int(key)] = int(dp[key])
+	var dl = data.get("diplomacy_levels", {})
+	for key in dl:
+		diplomacy_levels[int(key)] = int(dl[key])
+
+	seed_value = int(data.get("seed_value", 0))
+	rng.seed = seed_value
+	is_run_active = true
+	return true
+
+
+func delete_run_save() -> void:
+	if FileAccess.file_exists(RUN_SAVE_PATH):
+		DirAccess.remove_absolute(RUN_SAVE_PATH)
