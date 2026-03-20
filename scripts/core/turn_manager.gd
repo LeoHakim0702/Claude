@@ -84,7 +84,7 @@ func try_play_card(card_data: Resource, targets: Array) -> bool:
 
 	var should_exhaust: bool = false
 	for effect: Dictionary in card_data.effects:
-		if effect.type == "EXHAUST_SELF":
+		if effect.get("type", "") == "EXHAUST_SELF":
 			should_exhaust = true
 
 	if should_exhaust:

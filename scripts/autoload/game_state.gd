@@ -288,6 +288,30 @@ func save_run() -> void:
 	for card in player_deck:
 		deck_ids.append((card as CardData).id)
 
+	# Serialize map nodes to plain dictionaries
+	var serialized_map := {}
+	if current_map.has("nodes"):
+		var serialized_nodes: Array = []
+		for node in current_map["nodes"]:
+			serialized_nodes.append({
+				"id": node.id,
+				"row": node.row,
+				"col": node.col,
+				"type": node.type,
+				"connections": node.connections,
+				"visited": node.visited,
+				"available": node.available,
+				"position_x": node.position.x,
+				"position_y": node.position.y,
+				"port_name": node.port_name,
+				"port_name_zh": node.port_name_zh,
+			})
+		serialized_map = {
+			"nodes": serialized_nodes,
+			"rows": current_map.get("rows", 15),
+			"cols": current_map.get("cols", 7),
+		}
+
 	var save_data := {
 		"player_max_hp": player_max_hp,
 		"player_hp": player_hp,
@@ -295,7 +319,7 @@ func save_run() -> void:
 		"player_deck": deck_ids,
 		"player_relics": player_relics,
 		"current_act": current_act,
-		"current_map": current_map,
+		"current_map": serialized_map,
 		"current_node_id": current_node_id,
 		"acts_completed": acts_completed,
 		"diplomacy_points": diplomacy_points,
@@ -341,8 +365,36 @@ func load_run_save() -> bool:
 		player_relics.append(str(r))
 
 	current_act = int(data.get("current_act", 1))
-	current_map = data.get("current_map", {})
 	current_node_id = int(data.get("current_node_id", -1))
+
+	# Deserialize map nodes from plain dictionaries back to MapNode objects
+	current_map = {}
+	var saved_map = data.get("current_map", {})
+	if saved_map.has("nodes"):
+		var nodes: Array = []
+		for node_dict in saved_map["nodes"]:
+			var node := MapData.MapNode.new()
+			node.id = int(node_dict.get("id", 0))
+			node.row = int(node_dict.get("row", 0))
+			node.col = int(node_dict.get("col", 0))
+			node.type = int(node_dict.get("type", 0))
+			node.visited = node_dict.get("visited", false)
+			node.available = node_dict.get("available", false)
+			node.position = Vector2(
+				float(node_dict.get("position_x", 0)),
+				float(node_dict.get("position_y", 0))
+			)
+			node.port_name = str(node_dict.get("port_name", ""))
+			node.port_name_zh = str(node_dict.get("port_name_zh", ""))
+			var conns = node_dict.get("connections", [])
+			for c in conns:
+				node.connections.append(int(c))
+			nodes.append(node)
+		current_map = {
+			"nodes": nodes,
+			"rows": int(saved_map.get("rows", 15)),
+			"cols": int(saved_map.get("cols", 7)),
+		}
 	acts_completed = []
 	var acts_arr = data.get("acts_completed", [])
 	for a in acts_arr:

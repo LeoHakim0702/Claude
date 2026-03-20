@@ -1,0 +1,21 @@
+# Godot 4 generated files
+.godot/
+
+# Exported builds
+export/
+build/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Ziva AI Agent addon (download from https://ziva.sh/download)
+# After installing, the addon will be at addons/ziva-ai-agent/
+# Do not commit native binaries
+addons/ziva-ai-agent/*.so
+addons/ziva-ai-agent/*.dylib
+addons/ziva-ai-agent/*.dll
