@@ -159,9 +159,11 @@ func _on_combat_ended(won: bool):
 	# After 2 seconds, transition
 	await get_tree().create_timer(2.0).timeout
 	if won:
-		# For now, just go back to main menu
-		get_tree().change_scene_to_file("res://scenes/main_menu/main_menu.tscn")
+		GameState.save_run()
+		get_tree().change_scene_to_file("res://scenes/map/map_scene.tscn")
 	else:
+		GameState.end_run(false)
+		GameState.delete_run_save()
 		get_tree().change_scene_to_file("res://scenes/main_menu/main_menu.tscn")
 
 
